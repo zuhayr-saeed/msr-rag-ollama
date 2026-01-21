@@ -1,0 +1,12 @@
+# Core runtime deps
+requests>=2.31
+PyYAML>=6.0
+pdfminer.six>=20221105
+numpy>=1.24
+
+# Dev / tests
+pytest>=7.4
+
+# Optional (uncomment if you use these in analytics)
+# pandas>=2.1
+# scikit-learn>=1.4

@@ -1,0 +1,18 @@
+<configuration>
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- Quieter deps -->
+  <logger name="org.apache.tika" level="WARN"/>
+  <logger name="org.apache.uima" level="WARN"/>
+
+  <!-- Our package more verbose during homework -->
+  <logger name="edu.yourorg.msr" level="DEBUG"/>
+
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+  </root>
+</configuration>

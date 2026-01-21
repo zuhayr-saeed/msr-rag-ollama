@@ -1,0 +1,72 @@
+# Flink Kubernetes Operator Helm values for GraphRAG pipeline
+# Deploy with: helm install graphrag flink/flink-kubernetes-operator -f flink-values.yaml
+
+# Operator configuration
+operator:
+  replicas: 1
+  
+# Default Flink configuration applied to all jobs
+defaultConfiguration:
+  # Log configuration
+  log4j-operator.properties: |
+    rootLogger.level = INFO
+    rootLogger.appenderRef.console.ref = ConsoleAppender
+    appender.console.name = ConsoleAppender
+    appender.console.type = CONSOLE
+    appender.console.layout.type = PatternLayout
+    appender.console.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
+  
+  # Flink configuration
+  flink-conf.yaml: |
+    # Job manager configuration
+    jobmanager.memory.process.size: 1600m
+    
+    # Task manager configuration
+    taskmanager.memory.process.size: 1728m
+    taskmanager.numberOfTaskSlots: 2
+    
+    # Parallelism
+    parallelism.default: 2
+    
+    # Checkpointing (for fault tolerance)
+    execution.checkpointing.interval: 60000
+    execution.checkpointing.mode: EXACTLY_ONCE
+    state.backend: hashmap
+    state.checkpoints.dir: s3://graphrag-checkpoints/checkpoints
+    
+    # REST endpoint
+    rest.port: 8081
+    
+    # High availability (optional, for production)
+    # high-availability: kubernetes
+    # high-availability.storageDir: s3://graphrag-checkpoints/ha
+
+# Image configuration
+image:
+  repository: flink
+  tag: 1.20.2
+  pullPolicy: IfNotPresent
+
+# Resource limits
+jobManager:
+  resource:
+    memory: "2048m"
+    cpu: 1
+
+taskManager:
+  resource:
+    memory: "2048m"
+    cpu: 1
+  replicas: 2
+
+# Service account for S3 access
+serviceAccount:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/graphrag-flink-role
+
+# Pod annotations
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "9249"
+

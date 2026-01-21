@@ -1,0 +1,1 @@
+["edu.yourorg.msr.HashPdfs","edu.yourorg.msr.ListPdfs","edu.yourorg.msr.RunDeltaEmbedOnce","edu.yourorg.msr.RunDeltaOnce","edu.yourorg.msr.RunNormalize","edu.yourorg.msr.embed.BackfillEmbeddings","edu.yourorg.msr.index.PublishIndex","edu.yourorg.msr.search.SearchCli"]

@@ -1,0 +1,106 @@
+# Flink FlinkDeployment for GraphRAG Ingestion Pipeline
+# Apply with: kubectl apply -f job-graph-rag.yaml
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  name: graphrag-ingestion
+  namespace: graphrag
+spec:
+  image: graphrag-flink:latest
+  flinkVersion: v1_20
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "2"
+    parallelism.default: "2"
+    
+    # Checkpointing for exactly-once semantics
+    execution.checkpointing.interval: "60000"
+    execution.checkpointing.mode: EXACTLY_ONCE
+    state.backend: hashmap
+    
+    # Memory configuration
+    jobmanager.memory.process.size: "1600m"
+    taskmanager.memory.process.size: "2048m"
+    
+  serviceAccount: graphrag-flink-sa
+  
+  jobManager:
+    resource:
+      memory: "2048Mi"
+      cpu: 1
+    replicas: 1
+    
+  taskManager:
+    resource:
+      memory: "2048Mi"
+      cpu: 1
+    replicas: 2
+    
+  job:
+    jarURI: local:///opt/flink/usrlib/graphrag-ingestion.jar
+    entryClass: edu.yourorg.msr.graphrag.ingestion.FlinkGraphRagJob
+    parallelism: 2
+    upgradeMode: stateless
+    
+  podTemplate:
+    spec:
+      containers:
+        - name: flink-main-container
+          env:
+            # Neo4j connection
+            - name: NEO4J_URI
+              valueFrom:
+                secretKeyRef:
+                  name: graphrag-secrets
+                  key: neo4j-uri
+            - name: NEO4J_USER
+              valueFrom:
+                secretKeyRef:
+                  name: graphrag-secrets
+                  key: neo4j-user
+            - name: NEO4J_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: graphrag-secrets
+                  key: neo4j-pass
+            # Ollama endpoint
+            - name: OLLAMA_ENDPOINT
+              value: "http://ollama:11434"
+            - name: OLLAMA_MODEL
+              value: "llama3.2:latest"
+            # Enable LLM scoring
+            - name: ENABLE_LLM
+              value: "true"
+            # Chunk file from S3/ConfigMap
+            - name: MSR_CHUNK_FILE
+              value: "/data/chunks.tsv"
+          volumeMounts:
+            - name: data-volume
+              mountPath: /data
+      volumes:
+        - name: data-volume
+          configMap:
+            name: graphrag-data
+
+---
+# Service account for the Flink job
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: graphrag-flink-sa
+  namespace: graphrag
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/graphrag-flink-role
+
+---
+# Secrets for database credentials
+apiVersion: v1
+kind: Secret
+metadata:
+  name: graphrag-secrets
+  namespace: graphrag
+type: Opaque
+stringData:
+  neo4j-uri: "bolt://neo4j:7687"
+  neo4j-user: "neo4j"
+  neo4j-pass: "REPLACE_WITH_ACTUAL_PASSWORD"
+

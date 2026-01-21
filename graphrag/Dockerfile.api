@@ -1,0 +1,37 @@
+# GraphRAG API Docker Image
+# Uses SBT to run the application
+
+FROM eclipse-temurin:17-jdk
+
+WORKDIR /app
+
+# Install SBT
+RUN apt-get update && apt-get install -y curl gnupg && \
+    echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | tee /etc/apt/sources.list.d/sbt.list && \
+    curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x99E82A75642AC823" | apt-key add && \
+    apt-get update && apt-get install -y sbt && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Copy build files first (for better caching)
+COPY build.sbt .
+COPY project/ project/
+
+# Pre-download dependencies
+RUN sbt update
+
+# Copy source code
+COPY modules/ modules/
+COPY deploy/application.conf /app/application.conf
+
+# Compile
+RUN sbt compile
+
+# Expose port
+EXPOSE 8080
+
+# Set environment variables
+ENV API_HOST="0.0.0.0"
+ENV API_PORT="8080"
+
+# Run the API
+CMD ["sbt", "api/run"]

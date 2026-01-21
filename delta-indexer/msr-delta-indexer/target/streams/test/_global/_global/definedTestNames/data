@@ -1,0 +1,1 @@
+["edu.yourorg.msr.db.DeltaStoreIntegrationSpec","edu.yourorg.msr.config.AppConfigSpec","edu.yourorg.msr.search.SearchCliIntegrationSpec","edu.yourorg.msr.search.SimilaritySpec","edu.yourorg.msr.embed.VecCodecRoundtripSpec"]

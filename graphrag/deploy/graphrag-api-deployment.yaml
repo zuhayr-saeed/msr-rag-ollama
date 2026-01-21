@@ -1,0 +1,109 @@
+# GraphRAG REST API Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graphrag-api
+  namespace: graphrag
+  labels:
+    app: graphrag-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: graphrag-api
+  template:
+    metadata:
+      labels:
+        app: graphrag-api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+    spec:
+      containers:
+        - name: graphrag-api
+          image: graphrag-api:latest
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: API_HOST
+              value: "0.0.0.0"
+            - name: API_PORT
+              value: "8080"
+            - name: NEO4J_URI
+              valueFrom:
+                secretKeyRef:
+                  name: graphrag-secrets
+                  key: neo4j-uri
+            - name: NEO4J_USER
+              valueFrom:
+                secretKeyRef:
+                  name: graphrag-secrets
+                  key: neo4j-user
+            - name: NEO4J_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: graphrag-secrets
+                  key: neo4j-pass
+            - name: OLLAMA_ENDPOINT
+              value: "http://ollama:11434"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+---
+# GraphRAG API Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: graphrag-api
+  namespace: graphrag
+spec:
+  selector:
+    app: graphrag-api
+  ports:
+    - port: 80
+      targetPort: 8080
+      name: http
+  type: ClusterIP
+
+---
+# Ingress for external access
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: graphrag-api-ingress
+  namespace: graphrag
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: graphrag-api
+                port:
+                  number: 80
+

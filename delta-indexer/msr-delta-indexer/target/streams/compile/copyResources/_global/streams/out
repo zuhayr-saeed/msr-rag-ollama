@@ -1,0 +1,4 @@
+[0m[[0m[0mdebug[0m] [0m[0mCopy resource mappings: [0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/home/zuhayr/msr-hw2/msr-delta-indexer/src/main/resources/application.conf,/home/zuhayr/msr-hw2/msr-delta-indexer/target/scala-2.13/classes/application.conf)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/home/zuhayr/msr-hw2/msr-delta-indexer/src/main/resources/logback.xml,/home/zuhayr/msr-hw2/msr-delta-indexer/target/scala-2.13/classes/logback.xml)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/home/zuhayr/msr-hw2/msr-delta-indexer/src/main/resources/typesystem/TypeSystem.xml,/home/zuhayr/msr-hw2/msr-delta-indexer/target/scala-2.13/classes/typesystem/TypeSystem.xml)[0m

@@ -1,0 +1,15 @@
+module rag {
+  interface Worker {
+    void ping();
+    // Process a single PDF into chunk embeddings and write JSONL
+    // Returns the absolute path to the output JSONL file.
+    string processFile(
+      in string pdf_path,     // path to a .pdf accessible by the worker
+      in string job_id,       // label for filenames / tracing
+      in string model,        // e.g., "nomic-embed-text" or "mxbai-embed-large"
+      in long   max_chars,    // window size in characters (e.g., 1200-1800)
+      in long   overlap,      // overlap in characters (e.g., 200-300)
+      in string out_dir       // where to write the JSONL
+    );
+  };
+};

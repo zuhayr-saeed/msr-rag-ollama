@@ -1,0 +1,7 @@
+[0m[[0m[0mdebug[0m] [0m[0mnot up to date. inChanged = true, force = false[0m
+[0m[[0m[0mdebug[0m] [0m[0mUpdating ProjectRef(uri("file:/home/zuhayr/msr-hw2/msr-delta-indexer/project/"), "msr-delta-indexer-build")...[0m
+[0m[[0m[0minfo[0m] [0m[0mUpdating msr-delta-indexer-build[0m
+[0m[[0m[0minfo[0m] [0m[0mResolved msr-delta-indexer-build dependencies[0m
+[0m[[0m[0minfo[0m] [0m[0mFetching artifacts of msr-delta-indexer-build[0m
+[0m[[0m[0minfo[0m] [0m[0mFetched artifacts of msr-delta-indexer-build[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone updating ProjectRef(uri("file:/home/zuhayr/msr-hw2/msr-delta-indexer/project/"), "msr-delta-indexer-build")[0m

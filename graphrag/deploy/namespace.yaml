@@ -1,0 +1,9 @@
+# Namespace for GraphRAG components
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: graphrag
+  labels:
+    app.kubernetes.io/name: graphrag
+    app.kubernetes.io/part-of: graphrag-pipeline
+

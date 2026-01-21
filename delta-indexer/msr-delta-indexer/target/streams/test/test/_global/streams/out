@@ -1,0 +1,27 @@
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(edu.yourorg.msr.search.SearchCliIntegrationSpec, org.scalatest.tools.Framework$$anon$1@3a1daf6f, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(edu.yourorg.msr.config.AppConfigSpec, org.scalatest.tools.Framework$$anon$1@3a1daf6f, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(edu.yourorg.msr.embed.VecCodecRoundtripSpec, org.scalatest.tools.Framework$$anon$1@3a1daf6f, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(edu.yourorg.msr.db.DeltaStoreIntegrationSpec, org.scalatest.tools.Framework$$anon$1@3a1daf6f, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(edu.yourorg.msr.search.SimilaritySpec, org.scalatest.tools.Framework$$anon$1@3a1daf6f, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mSimilaritySpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- dot and norm are consistent[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- cosine is within [-1,1] and behaves as expected[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mAppConfigSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- defaults and/or env-overrides produce sane values[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mDeltaStoreIntegrationSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- can connect to Postgres and run a simple query[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mVecCodecRoundtripSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- floatsToBytes roundtrip (little-endian)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mSearchCliIntegrationSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- query embedding size matches model and cosine is bounded[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 2 seconds, 100 milliseconds.[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTotal number of tests run: 6[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mSuites: completed 5, aborted 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTests: succeeded 6, failed 0, canceled 0, ignored 0, pending 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mAll tests passed.[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mPassed tests:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	edu.yourorg.msr.db.DeltaStoreIntegrationSpec[0m
+[0m[[0m[0mdebug[0m] [0m[0m	edu.yourorg.msr.config.AppConfigSpec[0m
+[0m[[0m[0mdebug[0m] [0m[0m	edu.yourorg.msr.search.SearchCliIntegrationSpec[0m
+[0m[[0m[0mdebug[0m] [0m[0m	edu.yourorg.msr.search.SimilaritySpec[0m
+[0m[[0m[0mdebug[0m] [0m[0m	edu.yourorg.msr.embed.VecCodecRoundtripSpec[0m

@@ -1,0 +1,85 @@
+# Ollama DaemonSet for node-local LLM inference
+# This runs Ollama on each node for low-latency calls from Flink tasks
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ollama
+  namespace: graphrag
+  labels:
+    app: ollama
+spec:
+  selector:
+    matchLabels:
+      app: ollama
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      containers:
+        - name: ollama
+          image: ollama/ollama:latest
+          ports:
+            - containerPort: 11434
+              name: api
+          env:
+            - name: OLLAMA_HOST
+              value: "0.0.0.0:11434"
+          resources:
+            requests:
+              memory: "4Gi"
+              cpu: "2"
+            limits:
+              memory: "8Gi"
+              cpu: "4"
+              # For GPU support, uncomment below
+              # nvidia.com/gpu: 1
+          volumeMounts:
+            - name: ollama-models
+              mountPath: /root/.ollama
+          # Pull the model on startup
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - "ollama pull llama3.2:latest"
+          readinessProbe:
+            httpGet:
+              path: /api/tags
+              port: 11434
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/tags
+              port: 11434
+            initialDelaySeconds: 60
+            periodSeconds: 30
+      volumes:
+        - name: ollama-models
+          emptyDir:
+            sizeLimit: 20Gi
+      # Toleration for GPU nodes (if using GPUs)
+      # tolerations:
+      #   - key: "nvidia.com/gpu"
+      #     operator: "Exists"
+      #     effect: "NoSchedule"
+
+---
+# Service to expose Ollama within the cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama
+  namespace: graphrag
+spec:
+  selector:
+    app: ollama
+  ports:
+    - port: 11434
+      targetPort: 11434
+      name: api
+  type: ClusterIP
+

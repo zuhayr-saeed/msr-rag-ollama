@@ -1,0 +1,66 @@
+# ==========================
+# CS441 HW1 (CORBA Option) - RAG Index Builder
+# ==========================
+
+# ---- Input corpus ----
+# Use the full corpus; you can temporarily narrow with a more specific glob if needed.
+pdf_glob: "/mnt/c/Users/Zuhayr/Downloads/MSRCorpus/*.pdf"
+
+# Optional: a file with one absolute PDF path per line. If provided, it takes precedence over pdf_glob.
+pdf_list: ""
+
+# ---- Chunking ----
+# Character-based chunking; overlap keeps context across chunks.
+max_chars: 1200        # good range: 800–1800
+overlap: 200           # ~10–25% of max_chars is typical
+min_chunk_chars: 300   # drop very tiny trailing fragments
+
+# ---- Embeddings (Ollama) ----
+# You can use `nomic-embed-text` (dim=768) or `mxbai-embed-large` (dim=1024).
+embed_model: "nomic-embed-text"
+embed_dim: 768
+
+# The Ollama server; can be overridden via OLLAMA_HOST env.
+ollama_host: "http://127.0.0.1:11434"
+
+# Batch size when sending texts to /api/embeddings (tune for speed)
+embed_batch_size: 8
+embed_timeout_sec: 60
+
+# ---- Output ----
+# Where individual JSONL files go (one per PDF/job).
+out_dir: "out"
+
+# Optional merged output (if you run a merge step later)
+merged_jsonl: "corpus/corpus.jsonl"
+merged_meta_csv: "corpus/corpus_meta.csv"
+merged_vecs_npy: "corpus/corpus_vecs.npy"
+
+# ---- Extraction fallback (worker-side) ----
+# extractor: auto | pdfminer | poppler
+# Set env RAG_EXTRACTOR=poppler to force pdftotext on hard PDFs.
+extractor: "auto"
+extract_timeout_sec: 120
+
+# ---- CORBA / omniORB ----
+# NameService URI and the worker object name must match what your worker registers.
+nameservice: "corbaname::127.0.0.1:2809"
+worker_name: "worker-001"
+
+# ---- Concurrency / retries ----
+concurrency: 1          # coordinator will send one job at a time (safe default)
+retry_count: 2
+retry_backoff_sec: 2
+
+# ---- Logging ----
+# If you move logging.yaml, update this path.
+logging_config: "common/logging.yaml"
+log_level: "INFO"
+
+# ---- Safety switches ----
+# Skip existing output files to make resume idempotent.
+skip_if_exists: true
+
+# Hard limit on max files to process (0 = no limit)
+max_files: 0
+

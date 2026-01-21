@@ -1,0 +1,42 @@
+# EKS Cluster Configuration for GraphRAG
+# This creates a minimal cluster suitable for the homework demo
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: graphrag-cluster
+  region: us-east-1
+  version: "1.29"
+
+# IAM settings
+iam:
+  withOIDC: true
+
+# Node groups for the cluster
+managedNodeGroups:
+  - name: graphrag-nodes
+    instanceType: t3.large      # 2 vCPU, 8 GB RAM - good balance of cost/performance
+    desiredCapacity: 2          # Start with 2 nodes
+    minSize: 1
+    maxSize: 3
+    volumeSize: 50              # 50 GB EBS storage per node
+    ssh:
+      allow: false              # No SSH for security
+    iam:
+      withAddonPolicies:
+        ebs: true               # For persistent volumes
+        efs: true               # For shared storage if needed
+
+# Add-ons for the cluster
+addons:
+  - name: vpc-cni
+    attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+  - name: coredns
+  - name: kube-proxy
+
+# CloudWatch logging (optional but useful)
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["api", "audit", "authenticator"]
+

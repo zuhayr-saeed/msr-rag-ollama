@@ -1,0 +1,58 @@
+# SBT build artifacts
+target/
+project/target/
+project/project/
+
+# IDE files
+.idea/
+*.iml
+.metals/
+.bloop/
+.bsp/
+.vscode/
+*.sublime-*
+
+# Scala
+*.class
+*.log
+*.jar
+*.war
+*.ear
+
+# OS files
+.DS_Store
+Thumbs.db
+*~
+
+# Logs
+logs/
+*.log
+run.log
+
+# Environment files
+.env
+.env.local
+*.env
+
+# Credentials (never commit these!)
+secrets/
+*.pem
+*.key
+
+# Neo4j data (local development)
+neo4j-data/
+data/neo4j/
+
+# Ollama models (too large)
+.ollama/
+
+# Test output
+test-output/
+coverage/
+scoverage-report/
+
+# Docker
+docker-compose.override.yml
+
+# Kubernetes secrets (local)
+*.secret.yaml

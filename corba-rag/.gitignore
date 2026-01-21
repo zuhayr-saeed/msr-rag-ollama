@@ -1,0 +1,58 @@
+# ---- Python bytecode / caches ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.dll
+*.dylib
+# ---- Virtual environments & tooling ----
+.venv/
+.env/
+env/
+venv/
+pip-wheel-metadata/
+pip-log.txt
+# ---- Editors / IDEs ----
+.vscode/
+.idea/
+*.iml
+# ---- OS cruft ----
+.DS_Store
+Thumbs.db
+# ---- Test / Coverage ----
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+# ---- Build / Dist ----
+build/
+dist/
+.eggs/
+*.egg-info/
+.mypy_cache/
+.pytype/
+# ---- Logs ----
+*.log
+omniNames.log
+# ---- Notebooks ----
+.ipynb_checkpoints/
+# ---- Project-specific artifacts ----
+analytics/token_vecs.npy
+corpus/*.npy
+corpus/*.npz
+# omniNames / omniORB runtime files
+omninames*.dat
+omninames*.bak
+omniNames*.log
+omniORB_*.log
+# Temporary junk
+tmp/
+*.tmp
+*.swp
+*~
+# ---- Results directory policy ----
+# We KEEP out/*.jsonl in the repo because graders need to see your outputs.
+# If you prefer to ignore them locally, uncomment:
+# out/
+# out/*.jsonl
